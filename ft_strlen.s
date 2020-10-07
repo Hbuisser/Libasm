@@ -6,7 +6,7 @@ _ft_strlen:
 	        je		_return						;je = jump equal, si compare est egal
 
 _while:
-	        cmp		byte [rdi + rax], 0			;rdi[rax] ? 0 (char *rdi) => [] pour traiter les Registers comme des pointeurs
+	        cmp		byte [rdi + rax], 0			;rdi[rax] ? 0 ((char)rdi[rax]) => [] pour traiter les Registers comme des pointeurs
 	        je		_return
 	        inc		rax
 	        jmp		_while
