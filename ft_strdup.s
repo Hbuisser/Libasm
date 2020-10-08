@@ -7,7 +7,7 @@ _ft_strdup:
         xor         rax, rax
         xor         rsi, rsi
         cmp         rdi, 0
-        je          return
+        je          _return
 
 _while:
         push        rdi
@@ -16,9 +16,7 @@ _while:
         inc         rdi
 
         call        _malloc
-        cmp         rax, 0
-        je          _return
-        pop         rsi
+        pop         rsi                         ; ???
         mov         rdi, rax
         call        _ft_strcpy
         ret

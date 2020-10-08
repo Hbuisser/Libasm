@@ -1,9 +1,10 @@
         global      _ft_write
-        extern      __error
+        extern      ___error
 
 _ft_write: 
         xor         rax, rax
         xor         rcx, rcx
+
         mov         rax, 0x2000004          ;syscall Mac pour write
         syscall
 
@@ -11,7 +12,7 @@ _ft_write:
         push        rcx
         cmp         rsi, 0
         je          _return
-        ;mov		rax, 0x200005c		     ; valeur du syscall fcntl
+        mov	    rax, 0x200005c		     ; valeur du syscall fcntl
         push        rsi
         
         mov         rsi, 1                  ; vaeur du define getfd
@@ -29,7 +30,7 @@ _return:
         xor         rdx, rdx
         mov         rdx, rax
         push        rdx
-        call        __error
+        call       ___error
         pop         rdx
         mov         [rax], rdx
         mov         rax, -1
