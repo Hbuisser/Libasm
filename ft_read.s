@@ -5,11 +5,11 @@ _ft_read:
         xor         rax, rax
         xor         rcx, rcx
 
-        mov         rax, 0x2000003          ;rdi(fd), rsi(buff), rdx(nbytes)
+        mov         rax, 0x2000003          ;syscall pour read // rdi(fd), rsi(buff), rdx(nbytes)
         syscall
 
         mov         rcx, rax
-        push        rcx                     ;rcx is used by the kernel and its value is destroyed
+        push        rcx                     ;caller-save register // Decrement rsp by the size of the operand, then store rcx in [rsp]
         
         cmp         rsi, 0
         je          _return
@@ -18,16 +18,16 @@ _ft_read:
         push        rsi
         mov         rsi, 1                   ;valeur du define getfd
         syscall
-        pop         rsi
+        pop         rsi                      ;restore caller-save register
         cmp         rax, 0                   ;0 egal absence d'erreure fd
         jne         _return                  ;si pas egal a 0
 
-        pop         rcx
+        pop         rcx                     ;Move [rsp] into rcx, then increment rsp by the size of the operand
         mov         rax, rcx
         ret
 
 _return:
-        pop         rcx
+        pop         rcx                      ;restore caller-save register
         xor         rdx, rdx
         mov         rdx, rax
         push        rdx
