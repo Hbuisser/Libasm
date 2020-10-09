@@ -1,29 +1,33 @@
-            global  _ft_strcmp
+            global	_ft_strcmp
 
 _ft_strcmp:
-            xor     rax, rax
-            xor     rdx, rdx
-            cmp     rdi, 0
-            je      _return
-            cmp     rsi, 0
-            je      _return
+	        xor	    rax, rax
+	        xor	    rcx, rcx
+	        xor	    rdx, rdx
 
 _while:
-            mov     dl, byte [rdi + rax]
-            cmp     byte [rsi + rax], 0
-            jne      _return                        ;si les deux string ne sont pas egal, je passe au return 
-            cmp     dl, 0
-            je      _return
-            cmp     byte [rsi + rax], 0
-            je      _return
-            inc     rax
-            jmp     _while
+	        mov	    dl, byte [rsi + rcx]            ; s2[rcx]
+	        cmp	    byte [rdi + rcx], dl            ; s1[rcx] = s2[rcx] ?
+	        jne	    _compare
+	        cmp	    dl, 0
+	        je	    _compare
+	        cmp	    byte [rdi + rcx], 0             ; s1[rcx]
+	        je	    _compare
+	        inc	    rcx
+	        jmp	    _while
 
-_return:
-            mov     rdi, [rdi + rax]                ;mettre le pointeur dans la valeur du registre
-            and     rdi, 255                        ;enleve tout ce qui est en dehors du premier byte de rdi pour eviter l'overflow
-            mov     rsi, [rsi + rax]
-            and     rsi, 255
-            mov     rax, rdi
-            sub     rax, rsi
+_compare:
+	        cmp	    byte [rdi + rcx], dl            ; s2 par rapport a s1
+	        jl	    _inferior
+	        jg	    _superior
             ret
+
+_inferior:
+	        mov	    rax, -1
+	        ret
+
+_superior:
+	        mov	    rax, 1
+	        ret
+
+

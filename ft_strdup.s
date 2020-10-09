@@ -8,13 +8,10 @@ _ft_strdup:
         xor         rsi, rsi
         cmp         rdi, 0
         je          _return
-
-_while:
         push        rdi
         call        _ft_strlen
         mov         rdi, rax
         inc         rdi
-
         call        _malloc
         pop         rsi                         ; ???
         mov         rdi, rax
