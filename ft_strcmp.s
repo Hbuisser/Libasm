@@ -1,33 +1,29 @@
-            global	_ft_strcmp
+    global _ft_strcmp
 
 _ft_strcmp:
-	        xor	    rax, rax
-	        xor	    rcx, rcx
-	        xor	    rdx, rdx
+	xor		rax, rax
+	xor 	rdx, rdx
+	cmp		rdi, 0							;receive s1
+	je		_return
+	cmp		rsi, 0							;receive s2
+	je		_return
 
 _while:
-	        mov	    dl, byte [rsi + rcx]            ; s2[rcx]
-	        cmp	    byte [rdi + rcx], dl            ; s1[rcx] = s2[rcx] ?
-	        jne	    _compare
-	        cmp	    dl, 0
-	        je	    _compare
-	        cmp	    byte [rdi + rcx], 0             ; s1[rcx]
-	        je	    _compare
-	        inc	    rcx
-	        jmp	    _while
+	mov		dl,[rdi + rax]			;rdi[rax] // s1[0]
+	cmp		[rsi + rax], dl			;rsi[rax] // s2[0]
+	jne		_return
+	cmp		dl, 0
+	je		_return
+	cmp		byte [rsi + rax], 0
+	je		_return
+	inc		rax
+	jmp		_while
 
-_compare:
-	        cmp	    byte [rdi + rcx], dl            ; s2 par rapport a s1
-	        jl	    _inferior
-	        jg	    _superior
-            ret
-
-_inferior:
-	        mov	    rax, -1
-	        ret
-
-_superior:
-	        mov	    rax, 1
-	        ret
-
-
+_return:
+	mov		rdi, [rdi + rax]
+	and		rdi, 255				;ET BINAIRE donne le résultat 1 si les 2 opérandes sont 1 et donne 0 dans les autres cas et cela sur chacun des bits de l'opérande
+	mov		rsi, [rsi + rax]
+	and		rsi, 255
+	mov		rax, rdi
+	sub		rax, rsi				;soustrait le deuxième opérande (opérande source) du premier opérande (opérande cible) et entrepose le résultat dans l'opérande cible
+	ret
